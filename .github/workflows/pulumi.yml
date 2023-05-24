@@ -42,10 +42,8 @@ jobs:
         run: touch Pulumi.yaml
 
       - name: Create Pulumi.yaml
-        run: echo "name: ${{ env.PULUMI_STACK_NAME }}" > Pulumi.yaml
-
-      - name: Append to Pulumi.yaml
         run: |
+          echo "name: ${{ env.PULUMI_STACK_NAME }}" > Pulumi.yaml
           echo "runtime:" >> Pulumi.yaml
           echo "  name: nodejs" >> Pulumi.yaml
           echo "  options:" >> Pulumi.yaml
