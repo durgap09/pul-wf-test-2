@@ -2,7 +2,7 @@ name: Pulumi
 on:
   push:
     branches:
-      - ws-1/name-test
+      - master
 jobs:
   preview:
     name: Preview
@@ -13,7 +13,6 @@ jobs:
 
       - name: Checkout your repository
         uses: actions/checkout@v2
-
 
       - name: Checkout durgap09/pulumi-files-WFGA repository
         uses: actions/checkout@v2
@@ -27,14 +26,17 @@ jobs:
 
       - name: Set AWS Region
         run: echo "AWS_DEFAULT_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
-        
-      - name: Verify contents of working directory
-        run: echo ${{ env.PULUMI_STACK_NAME }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 14.x
+
+      - name: Create temporary folder
+        run: mkdir temp
+
+      - name: Set PULUMI_STACK_NAME
+        run: echo "PULUMI_STACK_NAME=${{ env.REPOSITORY_NAME }}" >> $GITHUB_ENV
 
       - name: Touch Pulumi.yaml
         run: touch Pulumi.yaml
@@ -47,18 +49,13 @@ jobs:
           echo "  options:" >> Pulumi.yaml
           echo "    typescript: false" >> Pulumi.yaml
           echo "description: A minimal AWS JavaScript Pulumi program" >> Pulumi.yaml
-          
-      - name: Verify contents of working directory
-        run: ls -l
-        
-      - name: Verify contents of working directory
-        run: pwd
-        
-      - name: Verify contents of working directory
-        run: cat Pulumi.yaml
 
       - name: Verify contents of working directory
         run: ls -l
+
+      - name: Verify contents of working directory
+        run: cat Pulumi.yaml
+
 
       - name: Install Dependencies
         run: npm install
@@ -67,7 +64,7 @@ jobs:
         uses: pulumi/actions@v3
         with:
           command: preview
-          stack-name: ${{ env.PULUMI_STACK_NAME }}
+          stack-name: ${{ env.PULUMI_STACK_NAME }}-dev
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
