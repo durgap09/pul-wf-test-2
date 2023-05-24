@@ -2,7 +2,7 @@ name: Pulumi
 on:
   push:
     branches:
-      - master
+      - ws-1/name-test
 jobs:
   preview:
     name: Preview
