@@ -32,15 +32,7 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: Create Pulumi.yaml
-        run: |
-          echo "name: ${{ secrets.PULUMI_STACK_NAME }}" > temp/Pulumi.yaml
-          echo "runtime:" >> temp/Pulumi.yaml
-          echo "  name: nodejs" >> temp/Pulumi.yaml
-          echo "  options:" >> temp/Pulumi.yaml
-          echo "    typescript: false" >> temp/Pulumi.yaml
-          echo "description: A minimal AWS JavaScript Pulumi program" >> temp/Pulumi.yaml
-          cp temp/Pulumi.yaml .
+      
 
       - name: Verify contents of working directory
         run: ls -l
