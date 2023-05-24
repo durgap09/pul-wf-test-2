@@ -13,6 +13,9 @@ jobs:
 
       - name: Checkout your repository
         uses: actions/checkout@v2
+        
+      - name: Verify contents of working directory
+        run: echo "name: ${{ env.PULUMI_STACK_NAME }}"
 
       - name: Checkout durgap09/pulumi-files-WFGA repository
         uses: actions/checkout@v2
