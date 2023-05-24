@@ -2,7 +2,7 @@ name: Pulumi
 on:
   push:
     branches:
-      - ws-1/name-test
+      - master
 jobs:
   preview:
     name: Preview
@@ -36,7 +36,7 @@ jobs:
         run: mkdir temp
 
       - name: Set PULUMI_STACK_NAME
-        run: echo "PULUMI_STACK_NAME=$(echo $GITHUB_REF | sed 's|refs/heads/||')" >> $GITHUB_ENV
+        run: echo "PULUMI_STACK_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $NF}')" >> $GITHUB_ENV
 
       - name: Touch Pulumi.yaml
         run: touch Pulumi.yaml
@@ -60,7 +60,7 @@ jobs:
         uses: pulumi/actions@v3
         with:
           command: preview
-          stack-name: ${{ env.PULUMI_STACK_NAME }}
+          stack-name: ${{ env.PULUMI_STACK_NAME }}-dev
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
