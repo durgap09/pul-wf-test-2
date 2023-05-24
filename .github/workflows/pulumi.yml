@@ -34,11 +34,11 @@ jobs:
 
       - name: Create Pulumi.yaml
         run: |
-          echo "name: ${{ secrets.PULUMI_STACK_NAME }}" > temp/Pulumi.yaml
-          echo "runtime:" >> temp/Pulumi.yaml
-          echo "  name: nodejs" >> temp/Pulumi.yaml
-          echo "  options:" >> temp/Pulumi.yaml
-          echo "    typescript: false" >> temp/Pulumi.yaml
+          echo "name: ${{ secrets.PULUMI_STACK_NAME }}" > Pulumi.yaml
+          echo "runtime:" >> Pulumi.yaml
+          echo "  name: nodejs" >> Pulumi.yaml
+          echo "  options:" >> Pulumi.yaml
+          echo "    typescript: false" >> Pulumi.yaml
           echo "description: A minimal AWS JavaScript Pulumi program" >> Pulumi.yaml
           
 
