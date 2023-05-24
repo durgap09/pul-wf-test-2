@@ -52,6 +52,9 @@ jobs:
 
       - name: Verify contents of working directory
         run: ls -l
+        
+      - name: Verify contents of working directory
+        run: cat  Pulumi.yaml
 
       - name: Install Dependencies
         run: npm install
@@ -60,7 +63,7 @@ jobs:
         uses: pulumi/actions@v3
         with:
           command: preview
-          stack-name: ${{ env.PULUMI_STACK_NAME }}-dev
+          stack-name: ${{ env.PULUMI_STACK_NAME }}
         env:
           PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
