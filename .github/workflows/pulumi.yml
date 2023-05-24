@@ -2,7 +2,7 @@ name: Pulumi
 on:
   push:
     branches:
-      - ws-1/name-test
+      - master
 jobs:
   preview:
     name: Preview
@@ -36,14 +36,16 @@ jobs:
         run: mkdir temp
 
       - name: Set PULUMI_STACK_NAME
-        run: echo "PULUMI_STACK_NAME=${{ github.ref.replace('refs/heads/', '') }}" >> $GITHUB_ENV
+        run: echo "PULUMI_STACK_NAME=$(echo $GITHUB_REF | sed 's|refs/heads/||')" >> $GITHUB_ENV
 
       - name: Touch Pulumi.yaml
         run: touch Pulumi.yaml
 
       - name: Create Pulumi.yaml
+        run: echo "name: ${{ env.PULUMI_STACK_NAME }}" > Pulumi.yaml
+
+      - name: Append to Pulumi.yaml
         run: |
-          echo "name: ${{ env.PULUMI_STACK_NAME }}" > Pulumi.yaml
           echo "runtime:" >> Pulumi.yaml
           echo "  name: nodejs" >> Pulumi.yaml
           echo "  options:" >> Pulumi.yaml
@@ -52,9 +54,6 @@ jobs:
 
       - name: Verify contents of working directory
         run: ls -l
-        
-      - name: Verify contents of working directory****
-        run: cat Pulumi.yaml
 
       - name: Install Dependencies
         run: npm install
