@@ -32,9 +32,6 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: Create temporary folder
-        run: mkdir temp
-
       - name: Touch Pulumi.yaml
         run: touch Pulumi.yaml
 
@@ -46,6 +43,15 @@ jobs:
           echo "  options:" >> Pulumi.yaml
           echo "    typescript: false" >> Pulumi.yaml
           echo "description: A minimal AWS JavaScript Pulumi program" >> Pulumi.yaml
+          
+      - name: Verify contents of working directory
+        run: ls -l
+        
+      - name: Verify contents of working directory
+        run: pwd
+        
+      - name: Verify contents of working directory
+        run: cat Pulumi.yaml
 
       - name: Verify contents of working directory
         run: ls -l
