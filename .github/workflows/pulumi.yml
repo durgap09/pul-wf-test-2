@@ -44,6 +44,9 @@ jobs:
 
       - name: Verify contents of working directory
         run: ls -l
+        
+      - name: Verify contents of working directory
+        run: pwd
 
       - name: Install Dependencies
         run: npm install
