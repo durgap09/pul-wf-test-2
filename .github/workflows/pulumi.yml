@@ -13,9 +13,7 @@ jobs:
 
       - name: Checkout your repository
         uses: actions/checkout@v2
-        
-      - name: Verify contents of working directory
-        run: echo "name: ${{ env.PULUMI_STACK_NAME }}"
+
 
       - name: Checkout durgap09/pulumi-files-WFGA repository
         uses: actions/checkout@v2
@@ -29,6 +27,9 @@ jobs:
 
       - name: Set AWS Region
         run: echo "AWS_DEFAULT_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
+        
+      - name: Verify contents of working directory
+        run: echo "${{ env.PULUMI_STACK_NAME }}"
 
       - name: Setup Node.js
         uses: actions/setup-node@v2
