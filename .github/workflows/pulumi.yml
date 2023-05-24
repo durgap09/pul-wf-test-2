@@ -1,0 +1,60 @@
+name: Pulumi
+on:
+  push:
+    branches:
+      - ws-1/name-test
+jobs:
+  preview:
+    name: Preview
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create temporary folder
+        run: mkdir temp
+
+      - name: Checkout your repository
+        uses: actions/checkout@v2
+
+      - name: Checkout durgap09/pulumi-files-WFGA repository
+        uses: actions/checkout@v2
+        with:
+          repository: durgap09/pulumi-files-WFGA
+          ref: main
+          path: temp-files
+
+      - name: Copy files to temp folder
+        run: cp -R temp-files/* .
+
+      - name: Set AWS Region
+        run: echo "AWS_DEFAULT_REGION=${{ secrets.AWS_REGION }}" >> $GITHUB_ENV
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.x
+
+      - name: Create Pulumi.yaml
+        run: |
+          echo "name: ${{ secrets.PULUMI_STACK_NAME }}" > temp/Pulumi.yaml
+          echo "runtime:" >> temp/Pulumi.yaml
+          echo "  name: nodejs" >> temp/Pulumi.yaml
+          echo "  options:" >> temp/Pulumi.yaml
+          echo "    typescript: false" >> temp/Pulumi.yaml
+          echo "description: A minimal AWS JavaScript Pulumi program" >> temp/Pulumi.yaml
+          cp temp/Pulumi.yaml .
+
+      - name: Verify contents of working directory
+        run: ls -l
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Pulumi Preview
+        uses: pulumi/actions@v3
+        with:
+          command: preview
+          stack-name: dev
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
