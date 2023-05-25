@@ -2,7 +2,7 @@ name: Pulumi
 on:
   push:
     branches:
-      - ws-1/name-test
+      - 'xxxx/xxxx/ws-1/name-test'
 jobs:
   preview:
     name: Preview
@@ -32,32 +32,17 @@ jobs:
         with:
           node-version: 14.x
 
-      - name: Create temporary folder
-        run: mkdir temp
-
-      - name: Set PULUMI_ORG_NAME
-        run: echo "PULUMI_ORG_NAME=$(echo $GITHUB_REF | sed 's|refs/heads/||')" >> $GITHUB_ENV
-
-      - name: Set PULUMI_STACK_NAME
-        run: echo "PULUMI_STACK_NAME=$(echo $GITHUB_REF | awk -F'/' '{print $NF}')" >> $GITHUB_ENV
-
-      - name: Touch Pulumi.yaml
-        run: touch Pulumi.yaml
-
       - name: Create Pulumi.yaml
         run: |
-          echo "name: ${{ env.PULUMI_ORG_NAME }}" > Pulumi.yaml
+          echo "name: ${{ github.ref }}" > Pulumi.yaml
           echo "runtime:" >> Pulumi.yaml
           echo "  name: nodejs" >> Pulumi.yaml
           echo "  options:" >> Pulumi.yaml
           echo "    typescript: false" >> Pulumi.yaml
           echo "description: A minimal AWS JavaScript Pulumi program" >> Pulumi.yaml
 
-      - name: Verify contents of working directory
-        run: ls -l
-
-      - name: Install Dependencies
-        run: npm install
+      - name: Set PULUMI_STACK_NAME
+        run: echo "PULUMI_STACK_NAME=$(echo ${{ github.ref }} | awk -F'/' '{print $NF}')" >> $GITHUB_ENV
 
       - name: Pulumi Preview
         uses: pulumi/actions@v3
