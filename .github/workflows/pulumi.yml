@@ -3,7 +3,7 @@ name: Pulumi
 on:
   push:
     branches:
-      - ${{ github.ref }}
+      - ws-1/name-test
 
 jobs:
   preview:
