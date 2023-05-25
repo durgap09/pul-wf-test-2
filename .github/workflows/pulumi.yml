@@ -40,6 +40,9 @@ jobs:
           echo "  options:" >> Pulumi.yaml
           echo "    typescript: false" >> Pulumi.yaml
           echo "description: A minimal AWS JavaScript Pulumi program" >> Pulumi.yaml
+          
+      - name: Verify contents of working directory
+        run: cat Pulumi.yaml
 
       - name: Set PULUMI_STACK_NAME
         run: echo "PULUMI_STACK_NAME=$(echo ${{ github.ref }} | awk -F'/' '{print $NF}')" >> $GITHUB_ENV
