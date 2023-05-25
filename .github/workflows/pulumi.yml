@@ -2,7 +2,7 @@ name: Pulumi
 on:
   push:
     branches:
-      - 'xxxx/xxxx/ws-1/name-test'
+      - 'ws-1/name-test'
 jobs:
   preview:
     name: Preview
